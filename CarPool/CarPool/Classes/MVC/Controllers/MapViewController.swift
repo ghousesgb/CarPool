@@ -247,7 +247,7 @@ class MapViewController: UIViewController {
     func configureMapAndMarkersForRoute() {
        
         dispatch_async(dispatch_get_main_queue()) {
-            self.mapView.camera = GMSCameraPosition.cameraWithTarget(self.mapTasks.originCoordinate, zoom: 11.0)
+            self.mapView.camera = GMSCameraPosition.cameraWithTarget(self.mapTasks.originCoordinate, zoom: 14.0)
             self.originMarker = GMSMarker(position: self.mapTasks.originCoordinate)
             self.originMarker.map = self.mapView
             self.originMarker.icon = GMSMarker.markerImageWithColor(UIColor.greenColor())
@@ -280,6 +280,7 @@ class MapViewController: UIViewController {
             
             let path: GMSPath = GMSPath(fromEncodedPath: route)
             self.routePolyline = GMSPolyline(path: path)
+            self.routePolyline.strokeWidth = 10.0
             self.routePolyline.map = self.mapView
         }
     }
@@ -312,7 +313,7 @@ class MapViewController: UIViewController {
     func recreateRoute() {
         if let _ = routePolyline {
             clearRoute()
-            
+            routePolyline.strokeWidth = 10.0
             mapTasks.getDirections(mapTasks.originAddress, destination: mapTasks.destinationAddress, waypoints: waypointsArray, travelMode: travelMode, completionHandler: { (status, success) -> Void in
                 
                 if success {
@@ -340,7 +341,7 @@ extension MapViewController: CLLocationManagerDelegate {
         
         if !didFindMyLocation {
             let myLocation: CLLocation = change![NSKeyValueChangeNewKey] as! CLLocation
-            mapView.camera = GMSCameraPosition.cameraWithTarget(myLocation.coordinate, zoom: 10.0)
+            mapView.camera = GMSCameraPosition.cameraWithTarget(myLocation.coordinate, zoom: 14.0)
             mapView.settings.myLocationButton = true
             
             didFindMyLocation = true
